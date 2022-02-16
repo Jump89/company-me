@@ -57,8 +57,8 @@ SO THAT I can organize and plan my business
 
 ## Walk Through Video 
 
-* ()
+* (https://watch.screencastify.com/v/y1YW8IPLJ7p6PQB7zLrp)
 
 ## Screen Shoot of Application
 
-* ![]()
+* ![](./image/screenshot.png)
