@@ -35,7 +35,6 @@ const choices = () => {
             case 'add a department':
                 addDepartment();
                 break;
-
             case 'add a role':
                 addRole();
                 break;
@@ -67,5 +66,60 @@ function viewEmployees() {
     return result;
 }
 
+function addDepartment() {
+    return inquirer.prompt({
+        type: 'input',
+        name: "department",
+        message: 'Please enter a new Department: '
+    }).then(answers => {
+        let result = db.query('INSERT INTO department (names) VALUES (?)', answers.department, (err, results) => {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(`Added ${answers.department} to the database!`);
+            }
+        })
+    })
+}
+
+function addRole() {
+    let department = [];
+    viewDepartment().then(departments => {
+        departments[0].forEach(depart => {
+            let newObj = {
+                id: depart.id,
+                name: depart.names
+            }
+            department.push(newObj)
+        })
+
+    });
+    return inquirer.prompt([{
+        type: 'input',
+        name: "title",
+        message: 'Please enter a new Title: '
+    }, {
+        type: 'input',
+        name: "salary",
+        message: 'Please enter your Salary: '
+    }, {
+        type: 'list',
+        name: "department",
+        message: 'Please select your Department: ',
+        choices: department
+    }]).then(answers => {
+        let departmentID = department.filter(x => answers.department === x.name)[0].id;
+        let result = db.query('INSERT INTO roles (title,salary,department_id) VALUES (?,?,?)', [answers.title,
+                answers.salary, departmentID
+            ],
+            (err, results) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log(`Added ${answers.title} to the database!`);
+                }
+            })
+    })
+}
 
 choices();
